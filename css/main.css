@@ -330,6 +330,11 @@ kbd {
   padding: 0.1em 0.3em;
   white-space: nowrap;
 }
+.content {
+  border-radius: 20px;
+  padding: 30px 60px 30px 60px;
+  background: rgba(255,255,255,0.8) none repeat scroll !important;
+}
 .text-left {
   text-align: left;
 }
@@ -1828,7 +1833,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #61fffa;
+  background: #2fffe0;
 }
 .links-of-blogroll {
   font-size: 13px;
