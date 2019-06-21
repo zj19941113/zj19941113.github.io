@@ -82,7 +82,7 @@
 <meta name="description" content="算法 / 前端 / Three">
 <meta property="og:type" content="website">
 <meta property="og:title" content="ZhouJie&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/C/index.html">
+<meta property="og:url" content="http://yoursite.com/tags/c/index.html">
 <meta property="og:site_name" content="ZhouJie&#39;s Blog">
 <meta property="og:description" content="算法 / 前端 / Three">
 <meta property="og:locale" content="zh-Hans">
@@ -118,13 +118,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/C/">
+  <link rel="canonical" href="http://yoursite.com/tags/c/">
 
 
 
 
 
-  <title>标签: C++ | ZhouJie's Blog</title>
+  <title>标签: c++ | ZhouJie's Blog</title>
   
 
 
@@ -287,7 +287,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h1>C++<small>标签</small>
+        <h1>c++<small>标签</small>
         </h1>
       </div>
 
@@ -299,17 +299,17 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2018/10/22/12/" itemprop="url">
+            <a class="post-title-link" href="/2018/11/30/6/" itemprop="url">
               
-                <span itemprop="name">C++ 近红外人脸定位与深度图人脸活体检测（.raw深度图像）</span>
+                <span itemprop="name">Ubuntu下编译C++与python版Dlib库，附新建样例程序（dlib+opencv）</span>
               
             </a>
         
       </h2>
 
       <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-10-22T11:35:07+08:00" content="2018-10-22">
-          10-22
+        <time class="post-time" itemprop="dateCreated" datetime="2018-11-30T16:55:00+08:00" content="2018-11-30">
+          11-30
         </time>
       </div>
 
@@ -371,7 +371,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -382,7 +382,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -393,7 +393,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1035,6 +1035,63 @@
               error: function(counter, error) {
                 console.log('Failed to save Visitor num, with error message: ' + error.message);
               }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+   }
             });
           } else {
             var newcounter = new Counter();
