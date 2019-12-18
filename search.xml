@@ -351,9 +351,9 @@
         <category>python/机器学习</category>
       </categories>
       <tags>
+        <tag>Python</tag>
         <tag>Mask_rcnn</tag>
         <tag>Jupyter</tag>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -384,8 +384,8 @@
       <tags>
         <tag>Ubuntu</tag>
         <tag>C++</tag>
-        <tag>Python</tag>
         <tag>Dlib</tag>
+        <tag>Python</tag>
         <tag>人脸识别</tag>
         <tag>Cmake</tag>
       </tags>
@@ -400,8 +400,8 @@
       </categories>
       <tags>
         <tag>Ubuntu</tag>
-        <tag>Python</tag>
         <tag>Dlib</tag>
+        <tag>Python</tag>
         <tag>人脸识别</tag>
         <tag>Opencv</tag>
       </tags>
