@@ -335,8 +335,8 @@
         <category>后台开发</category>
       </categories>
       <tags>
-        <tag>微信小程序</tag>
         <tag>人脸识别</tag>
+        <tag>微信小程序</tag>
         <tag>人脸追踪</tag>
         <tag>视频上传</tag>
         <tag>百度AI SDK</tag>
@@ -448,18 +448,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[C++ warning!warning!warning!]]></title>
-    <url>%2F2018%2F10%2F22%2F9%2F</url>
-    <content type="text"><![CDATA[1、warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings] char *imgFile = “data/IR_62_78_150_151.jpg”; 分析 ：char *背后的含义是：这个字符串，我要修改它。而传给函数的字面常量是没法被修改的。修正：把参数类型修改为const char * const char \*imgFile = &quot;data/IR_62_78_150_151.jpg&quot;; 2、warning: comparison between signed and unsigned integer expressions [-Wsign-compare]for (int j = 0; j &lt; shape.num_parts(); ++j) 分析：signed 和unsigned两种不同类型的比较，防止一个负的符号型的数据转化为无符号型时会产生一个很大的数据，signed 和unsigned数据的范围也不同。修正：使用size_t 类型。 for (std::size_t j = 0; j &lt; shape.num_parts(); ++j) 3、warning: unused variable ‘j’ [-Wunused-variable] int i,j;分析：代码写太长了，定义的j后面没用到。修正：删掉j。 int i; 4、warning: ignoring return value of ‘size_t fread(void, size_t, size_t, FILE)’, declared with attribute warn_unused_result [-Wunused-result] fread(MatDATA,sizeof(UNIT16),IMG_HEIGHT*IMG_WIDTH,fp);分析：使用fread(void*, size_t, size_t, FILE*)会返回一个size_t类型的值，假如命名为sizeRead，通过判断if (sizeRead != IMG_HEIGHT*IMG_WIDTH){printf(“error!\n”);}可以知道是否读取成功。修正：取返回值。 1234size_t sizeRead = fread(MatDATA,sizeof(UNIT16),IMG_HEIGHT*IMG_WIDTH,fp);if (sizeRead != IMG_HEIGHT*IMG_WIDTH) &#123; printf("error!\n");&#125; 5、warning: control reaches end of non-void function [-Wreturn-type]} 分析：控制到达非void函数的结尾。本应带有返回值的函数到达结尾后可能并没有返回任何值。修正：根据定义的类型加上返回值。return 0; } 6、error: stray ‘\240’ in program &amp;&amp; error: stray ‘\302’ in program分析：源代码中含有一些隐藏的非ascii字符。修正：将程序中出错行前面的空格删除，重新插入空格或tab键，重新编译，错误消失]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-        <tag>Warning</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[matlab 深度图人脸活体检测（.raw深度图像）]]></title>
     <url>%2F2018%2F10%2F22%2F1%2F</url>
     <content type="text"><![CDATA[github地址：https://github.com/zj19941113/Deep-Img-Liveness-Detection上面这个项目使用的数据集标定的不太准，PLANE_OR_NOT参数选为 0.1 这个数据集是自己标定的，数量较少但是比较准确： https://pan.baidu.com/s/161xSbayGW7tKg0tKfTW1mw ，PLANE_OR_NOT参数选为 0.2 快速鼠标标定深度图人脸位置： https://blog.csdn.net/ffcjjhv/article/details/83270002 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556RAW_PATH = '/home/zhoujie/liveness detection/zjraw/non-face/';PLANE_OR_NOT = 0.2; %根据标定位置的准确程度修改阈值ITER = 10000; %10000次结果基本已经稳定，不用修改file =dir([RAW_PATH ,'*.raw']);for num=1:length(file)f1 = fopen([RAW_PATH,file(num).name], 'r');txtname = strrep(file(num).name,'.raw','.txt');[par1,par2,par3,par4] = textread([RAW_PATH,txtname],'%d%d%d%d',1);data0 = fread(f1, 'uint16');fclose(f1);img1 = reshape(data0, 400, 345);dep_img = img1';% dep_img(find(dep_img &gt; 600))= 0;% figure(1),imshow(dep_img,[400,580]); face = dep_img(par2 :par2 +par4,par1 :par1 + par3); % figure(2),imshow(face,[400,580]); %%%三维平面拟合[X Y]=meshgrid(1:size(face,2),1:size(face,1));zz=face(:);xx=X(:);yy=Y(:);data=[xx';yy';zz'];id = data(3,:) == 0;data(:,id) = [];number = size(data,2); % 总点数sigma = 1;pretotal=0; %符合拟合模型的数据的个数for i=1:ITER %%% 随机选择三个点 idx = randperm(number,3); sample = data(:,idx); %%%拟合直线方程 z=ax+by+c plane = zeros(1,3); x = sample(1,:); y = sample(2,:); z = sample(3,:); a = ((z(1)-z(2))*(y(1)-y(3)) - (z(1)-z(3))*(y(1)-y(2)))/((x(1)-x(2))*(y(1)-y(3)) - (x(1)-x(3))*(y(1)-y(2))); b = ((z(1) - z(3)) - a * (x(1) - x(3)))/(y(1)-y(3)); c = z(1) - a * x(1) - b * y(1); plane = [a b -1 c]; mask=abs(plane*[data; ones(1,size(data,2))]); %求每个数据到拟合平面的距离 total=sum(mask&lt;sigma); %计算数据距离平面小于一定阈值的数据的个数 if total&gt;pretotal %找到符合拟合平面数据最多的拟合平面 pretotal=total;% bestplane=plane; %找到最好的拟合平面 end endpretotal_ary = pretotal/number;% potable(num) = pretotal_ary;if(pretotal_ary&gt;PLANE_OR_NOT) descrip = '不是人脸';elsedescrip = '是人脸'; enddisp(['pretotal=',num2str(pretotal),',','_ary=',num2str(pretotal_ary),',',file(num).name,descrip]);end]]></content>
@@ -470,6 +458,18 @@
       <tags>
         <tag>Matlab</tag>
         <tag>活体检测</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[C++ warning!warning!warning!]]></title>
+    <url>%2F2018%2F10%2F22%2F9%2F</url>
+    <content type="text"><![CDATA[1、warning: ISO C++ forbids converting a string constant to ‘char*’ [-Wwrite-strings] char *imgFile = “data/IR_62_78_150_151.jpg”; 分析 ：char *背后的含义是：这个字符串，我要修改它。而传给函数的字面常量是没法被修改的。修正：把参数类型修改为const char * const char \*imgFile = &quot;data/IR_62_78_150_151.jpg&quot;; 2、warning: comparison between signed and unsigned integer expressions [-Wsign-compare]for (int j = 0; j &lt; shape.num_parts(); ++j) 分析：signed 和unsigned两种不同类型的比较，防止一个负的符号型的数据转化为无符号型时会产生一个很大的数据，signed 和unsigned数据的范围也不同。修正：使用size_t 类型。 for (std::size_t j = 0; j &lt; shape.num_parts(); ++j) 3、warning: unused variable ‘j’ [-Wunused-variable] int i,j;分析：代码写太长了，定义的j后面没用到。修正：删掉j。 int i; 4、warning: ignoring return value of ‘size_t fread(void, size_t, size_t, FILE)’, declared with attribute warn_unused_result [-Wunused-result] fread(MatDATA,sizeof(UNIT16),IMG_HEIGHT*IMG_WIDTH,fp);分析：使用fread(void*, size_t, size_t, FILE*)会返回一个size_t类型的值，假如命名为sizeRead，通过判断if (sizeRead != IMG_HEIGHT*IMG_WIDTH){printf(“error!\n”);}可以知道是否读取成功。修正：取返回值。 1234size_t sizeRead = fread(MatDATA,sizeof(UNIT16),IMG_HEIGHT*IMG_WIDTH,fp);if (sizeRead != IMG_HEIGHT*IMG_WIDTH) &#123; printf("error!\n");&#125; 5、warning: control reaches end of non-void function [-Wreturn-type]} 分析：控制到达非void函数的结尾。本应带有返回值的函数到达结尾后可能并没有返回任何值。修正：根据定义的类型加上返回值。return 0; } 6、error: stray ‘\240’ in program &amp;&amp; error: stray ‘\302’ in program分析：源代码中含有一些隐藏的非ascii字符。修正：将程序中出错行前面的空格删除，重新插入空格或tab键，重新编译，错误消失]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>Warning</tag>
       </tags>
   </entry>
 </search>
